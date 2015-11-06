@@ -26,7 +26,10 @@ def seconduser_login(request):
     password = request.POST['password']
     redirect = request.POST['redirect']
     user = authenticate(email=email, password=password)
+    print ("aaaaaaaaaaaaaaaa")
+    print (user)
     if user is not None:
+      print ("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
       login(request, user)
       if redirect != "":
         return HttpResponseRedirect(redirect)
