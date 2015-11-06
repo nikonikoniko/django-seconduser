@@ -1,4 +1,3 @@
-from star.models import Star
 from .models import SecondUser
 
 
