@@ -1,11 +1,11 @@
-{% extends "subscriber/subscriber_base.html" %}
+
 
 
 
 {% block article %}
     <h1> Log in to your Subscriber Account</h1>
 
-    <form method="post" action="/subscribe/login/">
+    <form method="post" action="/accounts/login/">
       {{ auth_form.non_field_errors }}
       <p>
       {{ auth_form.email.errors }}
@@ -23,6 +23,6 @@
       {% csrf_token %}
     </form>
 
-    <p>Don't have an account? <a href="/subscribe/register/">Register for one</a></p>
+    <p>Don't have an account? <a href="/accounts/register/">Register for one</a></p>
 
 {% endblock article %}

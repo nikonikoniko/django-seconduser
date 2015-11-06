@@ -6,12 +6,12 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 
 
-class MemberChangeForm(forms.ModelForm):
+class SecondUserChangeForm(forms.ModelForm):
   password = ReadOnlyPasswordHashField()
   issues_purchased = forms.CharField()
 
   class Meta:
-      model = Member
+      model = SecondUser
       fields = ("issues_purchased",)
 
   def clean_password(self):
@@ -19,12 +19,12 @@ class MemberChangeForm(forms.ModelForm):
       return self.initial['password']
 
 
-class MemberAddForm(forms.ModelForm):
+class SecondUserAddForm(forms.ModelForm):
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
     password2 = forms.CharField(label="Password confirmation", widget=forms.PasswordInput)
 
     class Meta:
-        model = Member
+        model = SecondUser
         fields = ("email",)
 
     def clean_password2(self):
@@ -37,7 +37,7 @@ class MemberAddForm(forms.ModelForm):
         return password2
 
     def save(self, commit=True):
-        user = super(MemberAddForm, self).save(commit=False)
+        user = super(SecondUserAddForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
         if commit:
             user.save()
@@ -46,13 +46,13 @@ class MemberAddForm(forms.ModelForm):
 
 
 
-class MemberRegistrationForm(UserCreationForm):
+class SecondUserRegistrationForm(UserCreationForm):
     email = forms.EmailField(required = True)
     username = forms.CharField(required=False)
     humancheck = forms.CharField(required=False, error_messages={'invalid':"You are not Human!"})
 
     class Meta:
-        model = Member
+        model = SecondUser
         fields = ('email', 'password1', 'password2')
 
     def clean_humancheck(self):
@@ -61,7 +61,7 @@ class MemberRegistrationForm(UserCreationForm):
       return self
 
     def save(self,commit = True):
-        user = super(MemberRegistrationForm, self).save(commit = False)
+        user = super(SecondUserRegistrationForm, self).save(commit = False)
         user.email = self.cleaned_data['email']
 
         if commit:

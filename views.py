@@ -17,10 +17,10 @@ from .forms import *
 @login_required
 def index(request):
   user = request.user
-  
-  return render(request, 'member/index.html', {"user":user,})
 
-def member_login(request):
+  return render(request, 'seconduser/index.html', {"user":user,})
+
+def seconduser_login(request):
   if request.method == 'POST':
     email = request.POST['email']
     password = request.POST['password']
@@ -31,33 +31,33 @@ def member_login(request):
       if redirect != "":
         return HttpResponseRedirect(redirect)
       else:
-        return HttpResponseRedirect('/member/')
+        return HttpResponseRedirect('/accounts/')
     else:
-      return HttpResponseRedirect('/member/login/')
+      return HttpResponseRedirect('/accounts/login/')
   else:
     pass
   try:
     redirect = request.GET["next"]
   except:
     redirect = ""
-  return render(request, 'member/login.html', {"redirect":redirect,})
+  return render(request, 'seconduser/login.html', {"redirect":redirect,})
 
-def member_register(request):
+def seconduser_register(request):
   if request.method == 'POST':
-    form = MemberRegistrationForm(request.POST)
+    form = SecondUserRegistrationForm(request.POST)
     if form.is_valid():
       new_user = form.save()
       new_user = authenticate(email=form.cleaned_data['email'],
                                     password=form.cleaned_data['password2'])
       login(request, new_user)
-      return HttpResponseRedirect('/member/')
+      return HttpResponseRedirect('/accounts/')
     else:
-      return render(request, 'member/register.html', {"form":form})
+      return render(request, 'seconduser/register.html', {"form":form})
 
-  form = MemberRegistrationForm()
-  return render(request, 'member/register.html', {"form":form})
+  form = SecondUserRegistrationForm()
+  return render(request, 'seconduser/register.html', {"form":form})
 
 @login_required
-def member_logout(request):
+def seconduser_logout(request):
   logout(request)
-  return HttpResponseRedirect('/member/login')
+  return HttpResponseRedirect('/accounts/login')

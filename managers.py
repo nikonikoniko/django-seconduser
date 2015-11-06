@@ -1,6 +1,6 @@
 from django.contrib.auth.models import BaseUserManager
 
-class MemberManager(BaseUserManager):
+class SecondUserManager(BaseUserManager):
 
     def create_user(self, email, password, **kwargs):
         user = self.model(

@@ -5,9 +5,9 @@ from .forms import *
 
 
 
-class MemberAdmin(UserAdmin):
-  add_form = MemberAddForm
-  form = MemberChangeForm
+class SecondUserAdmin(UserAdmin):
+  add_form = SecondUserAddForm
+  form = SecondUserChangeForm
 
   list_display = ("email", "created_at", "updated_at")
   list_filter = ("created_at","updated_at")
@@ -21,4 +21,4 @@ class MemberAdmin(UserAdmin):
     "fields":("email","password1","password2")
     }), )
 
-admin.site.register(Member, MemberAdmin)
+admin.site.register(SecondUser, SecondUserAdmin)

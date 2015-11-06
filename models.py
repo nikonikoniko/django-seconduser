@@ -9,7 +9,7 @@ from django.contrib.auth.models import AbstractBaseUser
 from .managers import *
 from django.contrib.auth.models import User as AuthUser, UserManager
 
-class Member(AbstractBaseUser):
+class SecondUser(AbstractBaseUser):
   email = models.EmailField(max_length=200, unique=True)
   USERNAME_FIELD = 'email'
   objects = UserManager()
