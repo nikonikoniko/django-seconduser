@@ -1,0 +1,11 @@
+
+  <li id="menu-cart">
+    <a href="/subscribe/" title="your account">
+      {% if user.email %}
+        {{ user.email }}
+      {% else %}
+        Login
+      {% endif %}
+
+    </a>
+  </li>

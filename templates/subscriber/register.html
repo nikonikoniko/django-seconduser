@@ -1,0 +1,37 @@
+{% extends "subscriber/subscriber_base.html" %}
+
+
+
+{% block article %}
+
+<form method="post" action="/subscribe/register/">
+
+    {{ form.non_field_errors }}
+
+<p>
+    {{ form.email.errors }}
+    <label for="id_email">Email:</label>
+    <input id="id_email" name="email" type="email" />
+</p>
+<p>
+    {{ form.password1.errors }}
+    <label for="id_password1">Password:</label>
+    <input id="id_password1" name="password1" type="password" />
+</p>
+<p>
+    {{ form.password2.errors }}
+    <label for="id_password2">Password confirmation:</label>
+    <input id="id_password2" name="password2" type="password" />
+</p>
+<p>
+    {{ form.humancheck.errors }}
+    <label for="humancheck">Type <i>Human</i> if you are human:</label>
+    <input id="id_humancheck" name="humancheck" type="text" />
+</p>
+<p>
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+    <input type="submit" value="Create Account" class="button">
+</p>
+</form>
+
+{% endblock article %}

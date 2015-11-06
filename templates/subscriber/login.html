@@ -1,0 +1,28 @@
+{% extends "subscriber/subscriber_base.html" %}
+
+
+
+{% block article %}
+    <h1> Log in to your Subscriber Account</h1>
+
+    <form method="post" action="/subscribe/login/">
+      {{ auth_form.non_field_errors }}
+      <p>
+      {{ auth_form.email.errors }}
+      <label for="id_email">Email:</label> <input type="text" name="email" id="id_email">
+      </p>
+      <p>
+      {{ auth_form.password.errors }}
+      <label for="id_password">Password:</label> <input type="password" name="password" id="id_password">
+      </p>
+      <p>
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+      <input type="hidden" name="redirect" value="{{ redirect }}">
+      <input type="submit" value="Log In" class="button">
+      </p>
+      {% csrf_token %}
+    </form>
+
+    <p>Don't have an account? <a href="/subscribe/register/">Register for one</a></p>
+
+{% endblock article %}

@@ -1,0 +1,16 @@
+{% extends "subscriber/subscriber_base.html" %}
+
+
+
+{% block article %}
+<h1>Subscriber Account</h1>
+<h4>{{user.email}}</h2>
+<h5>Your purchased issues</h3>
+<ol>
+{% for issue in issues %}
+<li><a href="/{{ issue.number }}">{{issue.number}} : {{issue.title_de}} // {{ issue.title_en }}</a></li>
+{% endfor %}
+</ol>
+
+{% endblock article%}
+
