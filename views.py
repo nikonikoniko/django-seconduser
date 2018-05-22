@@ -2,10 +2,10 @@ from django.shortcuts import get_object_or_404, render, render_to_response
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.template import RequestContext, loader
 from django.contrib.auth import authenticate, login, logout
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 
 
 from .models import *
@@ -26,10 +26,8 @@ def seconduser_login(request):
     password = request.POST['password']
     redirect = request.POST['redirect']
     user = authenticate(email=email, password=password)
-    print ("aaaaaaaaaaaaaaaa")
     print (user)
     if user is not None:
-      print ("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
       login(request, user)
       if redirect != "":
         return HttpResponseRedirect(redirect)
@@ -53,7 +51,7 @@ def seconduser_register(request):
       new_user = authenticate(email=form.cleaned_data['email'],
                                     password=form.cleaned_data['password2'])
       login(request, new_user)
-      return HttpResponseRedirect('/accounts/')
+      return HttpResponseRedirect('/')
     else:
       return render(request, 'seconduser/register.html', {"form":form})
 
