@@ -6,35 +6,37 @@ from django.urls import reverse
 from django.template import RequestContext, loader
 from django.contrib.auth import authenticate, login, logout
 from django.template.context_processors import csrf
+from fn.func import curried
+
+from django.template.loader import render_to_string
+from .tokens import account_activation_token
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_decode
+from django.views.generic import View
 
 
 from .models import *
 from .forms import *
 
 
-
-
-@login_required
-def index(request):
-  user = request.user
-
-  return render(request, 'seconduser/index.html', {"user":user,})
-
+@curried
 def seconduser_login(request):
   if request.method == 'POST':
     email = request.POST['email']
     password = request.POST['password']
     redirect = request.POST['redirect']
     user = authenticate(email=email, password=password)
-    print (user)
-    if user is not None:
+    if user is not None and user.email_confirmed == True:
       login(request, user)
       if redirect != "":
         return HttpResponseRedirect(redirect)
       else:
-        return HttpResponseRedirect('/accounts/')
+        return HttpResponseRedirect(reverse('seconduser_home'))
     else:
-      return HttpResponseRedirect('/accounts/login/')
+      return HttpResponseRedirect(reverse('seconduser_login'))
   else:
     pass
   try:
@@ -43,22 +45,53 @@ def seconduser_login(request):
     redirect = ""
   return render(request, 'seconduser/login.html', {"redirect":redirect,})
 
-def seconduser_register(request):
+@curried
+def seconduser_register(modelform, request):
+  print(modelform)
   if request.method == 'POST':
-    form = SecondUserRegistrationForm(request.POST)
+    form = modelform(request.POST)
     if form.is_valid():
-      new_user = form.save()
-      new_user = authenticate(email=form.cleaned_data['email'],
-                                    password=form.cleaned_data['password2'])
-      login(request, new_user)
-      return HttpResponseRedirect('/')
+      new_user = form.save(commit=False)
+      new_user.is_active = False
+      new_user.save()
+      current_site = get_current_site(request)
+      subject = 'Activate Your MySite Account'
+      message = render_to_string('seconduser/account_activation_email.html', {
+        'user': new_user,
+        'domain': current_site.domain,
+        'uid': urlsafe_base64_encode(force_bytes(new_user.pk)).decode('utf-8'),
+        'token': account_activation_token.make_token(new_user),
+      })
+      new_user.email_user(subject, message)
+      print(message)
+      return render(request, 'seconduser/activation_sent.html', {})
     else:
       return render(request, 'seconduser/register.html', {"form":form})
 
-  form = SecondUserRegistrationForm()
+  form = modelform()
   return render(request, 'seconduser/register.html', {"form":form})
+
+class seconduser_activate(View):
+    def __init__(self, usermodel):
+        self.usermodel=usermodel
+
+    def get(self, request, uidb64, token):
+        try:
+            uid = force_text(urlsafe_base64_decode(uidb64))
+            user = self.usermodel.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, self.usermodel.DoesNotExist):
+            user = None
+
+        if user is not None and account_activation_token.check_token(user, token):
+            user.email_confirmed = True
+            user.save()
+            login(request, user, backend='django_seconduser.backends.SecondUserAuth')
+            return HttpResponseRedirect('/')
+        else:
+            # invalid link
+            return render(request, 'seconduser/invalid.html')
 
 @login_required
 def seconduser_logout(request):
   logout(request)
-  return HttpResponseRedirect('/accounts/login')
+  return HttpResponseRedirect(reverse('seconduser_login'))

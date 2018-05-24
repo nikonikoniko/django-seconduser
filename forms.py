@@ -49,16 +49,10 @@ class SecondUserAddForm(forms.ModelForm):
 class SecondUserRegistrationForm(UserCreationForm):
     email = forms.EmailField(required = True)
     username = forms.CharField(required=False)
-    humancheck = forms.CharField(required=False, error_messages={'invalid':"You are not Human!"})
 
     class Meta:
         model = SecondUser
         fields = ('email', 'password1', 'password2')
-
-    def clean_humancheck(self):
-      if self.cleaned_data['humancheck'] != "Human":
-        raise ValidationError(self.fields['humancheck'].error_messages['invalid'])
-      return self
 
     def save(self,commit = True):
         user = super(SecondUserRegistrationForm, self).save(commit = False)

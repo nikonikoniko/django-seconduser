@@ -24,11 +24,6 @@
     <input id="id_password2" name="password2" type="password" />
 </p>
 <p>
-    {{ form.humancheck.errors }}
-    <label for="humancheck">Type <i>Human</i> if you are human:</label>
-    <input id="id_humancheck" name="humancheck" type="text" />
-</p>
-<p>
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
     <input type="submit" value="Create Account" class="button">
 </p>

@@ -5,10 +5,6 @@ class SecondUserAuth(object):
     def authenticate(self, authmodel=None, email=None, password=None):
         try:
             user = SecondUser.objects.get(email=email)
-            print (user)
-            print (password)
-            print (email)
-            print ("yyyyyyyyyyyyyyyyyy")
             if user.check_password(password):
                 return user
         except SecondUser.DoesNotExist:
