@@ -8,6 +8,9 @@ from django.contrib.auth.models import AbstractBaseUser
 
 from .managers import *
 from django.contrib.auth.models import User as AuthUser, UserManager
+from django.core.mail import send_mail
+
+from noncitizenarchive.settings import EMAIL_HOST
 
 class SecondUser(AbstractBaseUser):
   email = models.EmailField(max_length=200, unique=True)
@@ -19,9 +22,13 @@ class SecondUser(AbstractBaseUser):
   updated_at = models.DateTimeField(auto_now=True)
 
   def email_user(self, subject, message):
-    print("EMAIL USERRRRRRRR")
-    print(subject)
-    print(message)
+    send_mail(
+        subject,
+        message,
+        'nicholaspara@gmail.com',
+        [self.email],
+        fail_silently=False,
+    )
     return False
 
   def subscribed():
