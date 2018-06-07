@@ -115,6 +115,7 @@ class SecondUserPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'seconduser/password_reset_complete.html'
 
 class SecondUserPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'seconduser/password_reset_confirm.html'
 
     def get_user(self, uidb64):
         print("pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp")
