@@ -13,9 +13,10 @@ from .tokens import account_activation_token
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes
 from django.utils.encoding import force_text
-from django.utils.http import urlsafe_base64_encode
-from django.utils.http import urlsafe_base64_decode
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views.generic import View
+
+from django.contrib.auth.views import PasswordResetView, PasswordResetCompleteView, PasswordResetConfirmView, PasswordResetDoneView
 
 
 from .models import *
@@ -95,3 +96,34 @@ class seconduser_activate(View):
 def seconduser_logout(request):
   logout(request)
   return HttpResponseRedirect(reverse('seconduser_login'))
+
+
+
+
+
+
+class SecondUserPasswordResetView(PasswordResetView):
+    form_class = SecondUserPasswordResetForm
+    template_name = 'seconduser/password_reset_form.html'
+    email_template_name = 'seconduser/password_reset_email.html'
+    subject_template_name = 'seconduser/password_reset_subject.txt'
+
+class SecondUserPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'seconduser/password_reset_done.html'
+
+class SecondUserPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'seconduser/password_reset_complete.html'
+
+class SecondUserPasswordResetConfirmView(PasswordResetConfirmView):
+
+    def get_user(self, uidb64):
+        print("pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp")
+        try:
+            # urlsafe_base64_decode() decodes to bytestring
+            uid = urlsafe_base64_decode(uidb64).decode()
+            print("aha")
+            user = SecondUser._default_manager.get(pk=uid)
+            print(user)
+        except (TypeError, ValueError, OverflowError, SecondUser.DoesNotExist, ValidationError):
+            user = None
+        return user
