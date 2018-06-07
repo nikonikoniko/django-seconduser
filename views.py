@@ -118,13 +118,10 @@ class SecondUserPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'seconduser/password_reset_confirm.html'
 
     def get_user(self, uidb64):
-        print("pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp")
         try:
             # urlsafe_base64_decode() decodes to bytestring
             uid = urlsafe_base64_decode(uidb64).decode()
-            print("aha")
             user = SecondUser._default_manager.get(pk=uid)
-            print(user)
         except (TypeError, ValueError, OverflowError, SecondUser.DoesNotExist, ValidationError):
             user = None
         return user

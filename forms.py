@@ -83,7 +83,6 @@ class SecondUserPasswordResetForm(PasswordResetForm):
         that prevent inactive users and users with unusable passwords from
         resetting their password.
         """
-        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
         active_users = SecondUser._default_manager.filter(**{
             '%s__iexact' % SecondUser.get_email_field_name(): email,
             'email_confirmed': True,
@@ -100,7 +99,6 @@ class SecondUserPasswordResetForm(PasswordResetForm):
         Generate a one-use only link for resetting password and send it to the
         user.
         """
-        print("OADHOUWHOUHDUHDWKUHWUHDW")
         email = self.cleaned_data["email"]
         for user in self.get_users(email):
             if not domain_override:
