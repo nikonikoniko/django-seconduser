@@ -64,7 +64,6 @@ def seconduser_register(modelform, request):
         'token': account_activation_token.make_token(new_user),
       })
       new_user.email_user(subject, message)
-      print(message)
       return render(request, 'seconduser/activation_sent.html', {})
     else:
       return render(request, 'seconduser/register.html', {"form":form})
