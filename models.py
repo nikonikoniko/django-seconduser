@@ -25,7 +25,7 @@ class SecondUser(AbstractBaseUser):
     send_mail(
         subject,
         message,
-        'nicholaspara@gmail.com',
+        'admin@test',
         [self.email],
         fail_silently=False,
     )
