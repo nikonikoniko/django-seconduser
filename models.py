@@ -10,7 +10,7 @@ from .managers import *
 from django.contrib.auth.models import User as AuthUser, UserManager
 from django.core.mail import send_mail
 
-from noncitizenarchive.settings import EMAIL_HOST
+from django.conf import settings
 
 class SecondUser(AbstractBaseUser):
   email = models.EmailField(max_length=200, unique=True)
@@ -25,7 +25,7 @@ class SecondUser(AbstractBaseUser):
     send_mail(
         subject,
         message,
-        None,
+        settings.EMAIL_SENDER,
         [self.email],
         fail_silently=False,
     )

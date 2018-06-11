@@ -14,6 +14,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 
+from django.conf import settings
+
 
 
 class SecondUserChangeForm(forms.ModelForm):
@@ -118,6 +120,6 @@ class SecondUserPasswordResetForm(PasswordResetForm):
                 **(extra_email_context or {}),
             }
             self.send_mail(
-                subject_template_name, email_template_name, context, from_email,
+                subject_template_name, email_template_name, context, settings.EMAIL_SENDER,
                 email, html_email_template_name=html_email_template_name,
 )

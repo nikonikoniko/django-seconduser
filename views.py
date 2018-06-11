@@ -18,7 +18,6 @@ from django.views.generic import View
 
 from django.contrib.auth.views import PasswordResetView, PasswordResetCompleteView, PasswordResetConfirmView, PasswordResetDoneView
 
-
 from .models import *
 from .forms import *
 

@@ -8,3 +8,7 @@ AUTHENTICATION_BACKENDS = [
 
 
   extend into a model
+
+  EMAIL_SENDER in settings
+
+  urls
