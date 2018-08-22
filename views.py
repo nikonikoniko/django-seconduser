@@ -55,7 +55,7 @@ def seconduser_register(modelform, request):
       new_user.is_active = False
       new_user.save()
       current_site = get_current_site(request)
-      subject = 'Activate Your MySite Account'
+      subject = render_to_string('seconduser/account_activation_email_subject.txt', {}).rstrip()
       message = render_to_string('seconduser/account_activation_email.html', {
         'user': new_user,
         'domain': current_site.domain,
@@ -65,6 +65,8 @@ def seconduser_register(modelform, request):
       new_user.email_user(subject, message)
       return render(request, 'seconduser/activation_sent.html', {})
     else:
+      print("dhoiawhdoiwahdiwahdhdwa")
+      print(form.errors.as_json())
       return render(request, 'seconduser/register.html', {"form":form})
 
   form = modelform()
