@@ -24,6 +24,8 @@ from .forms import *
 
 @curried
 def seconduser_login(request):
+  if request.user.is_authenticated:
+      return HttpResponseRedirect(reverse('seconduser_home'))
   if request.method == 'POST':
     email = request.POST['email']
     password = request.POST['password']
