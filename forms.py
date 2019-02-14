@@ -56,11 +56,28 @@ class SecondUserAddForm(forms.ModelForm):
         return user
 
 
+class SecondUserActivationEmailForm(forms.Form):
+    email = forms.CharField(
+        required = True,
+        error_messages={'unique': 'User with this email already exists'}
+    )
+
+    class Meta:
+        fields = ('email')
 
 
 class SecondUserRegistrationForm(UserCreationForm):
-    email = forms.EmailField(required = True)
-    username = forms.CharField(required=False)
+    username = forms.CharField(
+        required = True,
+        error_messages={
+            'invalid': 'Username must contain only letters and numbers. Username must not contain spaces or other characters.',
+            'unique': 'User with this username already exists.'
+        }
+    )
+    email = forms.CharField(
+        required = True,
+        error_messages={'unique': 'User with this email already exists'}
+    )
 
     class Meta:
         model = SecondUser

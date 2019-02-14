@@ -1,0 +1,20 @@
+
+
+
+
+{% block article %}
+    <form method="post" action="{{url}}">
+      {{ form.non_field_errors }}
+      <p>
+      {{ form.email.errors }}
+      <label for="id_email">Email:</label> <input type="text" name="email" id="id_email">
+      </p>
+      <p>
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+      <input type="hidden" name="redirect" value="{{ redirect }}">
+      <input type="submit" value="Log In" class="button">
+      </p>
+      {% csrf_token %}
+    </form>
+
+{% endblock article %}
