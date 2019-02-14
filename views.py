@@ -47,7 +47,7 @@ def seconduser_login(request):
     user = authenticate(email=email, password=password)
 
     if user is None:
-        msg = f"Username or password wrong"
+        msg = "Username or password wrong"
         return render(request, 'seconduser/login.html', {"redirect":redirect, "msg": msg})
 
     if user.email_confirmed == True:
@@ -57,7 +57,7 @@ def seconduser_login(request):
       else:
         return HttpResponseRedirect(reverse('seconduser_home'))
     else:
-        msg = f"Account is not confirmed.  <strong><a href={reverse('seconduser_resend')}>Click here to resend activation email</a></strong>"
+        msg = "Account is not confirmed.  <strong><a href=%s>Click here to resend activation email</a></strong>" % reverse('seconduser_resend')
         return render(request, 'seconduser/login.html',
             {"redirect":redirect, "msg": msg})
 
